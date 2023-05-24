@@ -20,10 +20,10 @@ This is an official implementation of **Sophia-G** and GPT-2 training scripts ba
 ## Dependencies
 
 - [pytorch](https://pytorch.org) 2.0
-- `pip install transformers` 
-- `pip install datasets` 
-- `pip install tiktoken` 
-- `pip install wandb` 
+- transformers
+- datasets
+- tiktoken 
+- wandb 
 
 ## Usage (GPT-2 Pre-training)
 
