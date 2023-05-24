@@ -100,8 +100,8 @@ for epoch in range(epochs):
 
 ## Hyper-parameter Tuning
 
-- While we are still working on tuning hyper-parameters, one suggestion learned from current experiments is to set $\rho$ in $[10,100]$. $\rho$ seems transferable across different model sizes. 
-- Another important thing is to make $\rho\times$ LR $\times$ ```total_bs``` about $1/2 \times$ the LR you would use for AdamW. Some partial results indicate this can even be made larger, leading to faste convergence. 
+- While we are still working on tuning hyper-parameters, one suggestion learned from current experiments is to choose $\rho$ in $[0.01, 0.1]$. $\rho$ seems transferable across different model sizes. 
+- Another important thing is to set $\rho\times$ LR to about $1/2 \times$ the LR you would use for AdamW. Some partial results indicate this can even be made larger, leading to faste convergence. 
 - Please let us know what you find out when tuning hyper-parameters. We appreciate your valuable feedbacks and comments!
 
 
