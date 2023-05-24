@@ -16,7 +16,7 @@ class SophiaG(Optimizer):
         if not 0.0 <= betas[1] < 1.0:
             raise ValueError("Invalid beta parameter at index 1: {}".format(betas[1]))
         if not 0.0 <= gamma:
-            raise ValueError("Invalid gamma parameter at index 1: {}".format(gamma))
+            raise ValueError("Invalid gamma: {}".format(gamma))
         if not 0.0 <= weight_decay:
             raise ValueError("Invalid weight_decay value: {}".format(weight_decay))
         defaults = dict(lr=lr, betas=betas, gamma=gamma, 
@@ -206,7 +206,7 @@ class SophiaH(Optimizer):
         if not 0.0 <= betas[1] < 1.0:
             raise ValueError("Invalid beta parameter at index 1: {}".format(betas[1]))
         if not 0.0 <= gamma:
-            raise ValueError("Invalid gamma parameter at index 1: {}".format(gamma))
+            raise ValueError("Invalid gamma: {}".format(gamma))
         if not 0.0 <= weight_decay:
             raise ValueError("Invalid weight_decay value: {}".format(weight_decay))
         defaults = dict(lr=lr, betas=betas, gamma=gamma, 
