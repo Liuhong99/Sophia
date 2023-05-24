@@ -25,7 +25,7 @@ This is an official implementation of **Sophia-G** and GPT-2 training scripts ba
 - `pip install tiktoken` 
 - `pip install wandb` 
 
-## Usage
+## Usage (GPT-2 Pre-training)
 
 Prepare the [OpenWebText](https://huggingface.co/datasets/openwebtext) data following [nanoGPT](https://github.com/karpathy/nanoGPT/):
 ```
