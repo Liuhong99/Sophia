@@ -66,7 +66,7 @@ loss_function = nn.CrossEntropy()
 data_loader = ...
 
 #init the optimizer
-optimizer = SophiaG(model.parameters(), lr=2e-8, betas=(0.965, 0.99), gamma = 2e4, weight_decay=1e-1)
+optimizer = SophiaG(model.parameters(), lr=1e-3, betas=(0.965, 0.99), gamma = 1, weight_decay=1e-1)
 
 k = 10
 iter_num = 0
