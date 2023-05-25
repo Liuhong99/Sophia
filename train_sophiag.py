@@ -40,13 +40,13 @@ dropout = 0.0 # for pretraining 0 is good, for finetuning try 0.1+
 bias = False # do we use bias inside LayerNorm and Linear layers?
 # optimizer
 optimizer_name = 'sophiag' 
-learning_rate = 1e-2 # max learning rate
+learning_rate = 3e-4 # max learning rate
 max_iters = 600000 # total number of training iterations
 weight_decay = 1e-1
 beta1 = 0.9
 beta2 = 0.95
 grad_clip = 1.0 # clip gradients at this value, or disable if == 0.0
-rho = 30
+rho = 0.03
 interval = 10
 hess_interval = interval
 variant = 4 
@@ -54,7 +54,7 @@ variant = 4
 decay_lr = True # whether to decay the learning rate
 warmup_iters = 2000 # how many steps to warm up for
 lr_decay_iters = 600000 # should be ~= max_iters per Chinchilla
-min_lr = 6e-5 # minimum learning rate, should be ~= learning_rate/10 per Chinchilla
+min_lr = 1.5e-5 # minimum learning rate, should be ~= learning_rate/10 per Chinchilla
 # DDP settings
 backend = 'nccl' # 'nccl', 'gloo', etc.
 # system
@@ -66,8 +66,6 @@ scale_attn_by_inverse_layer_idx = False
 config_keys = [k for k,v in globals().items() if not k.startswith('_') and isinstance(v, (int, float, bool, str))]
 exec(open('configurator.py').read()) # overrides from command line or config file
 config = {k: globals()[k] for k in config_keys} # will be useful for logging
-learning_rate = learning_rate * rho
-min_lr = min_lr * rho
 # -----------------------------------------------------------------------------
 
 # various inits, derived attributes, I/O setup
@@ -177,7 +175,7 @@ if block_size < model.config.block_size:
 model.to(device)
 
 
-optimizer = model.configure_optimizers(optimizer_name, weight_decay, learning_rate, (beta1, beta2), rho * block_size * total_bs, device_type)
+optimizer = model.configure_optimizers(optimizer_name, weight_decay, learning_rate, (beta1, beta2), rho, device_type)
 if init_from == 'resume':
     optimizer.load_state_dict(checkpoint['optimizer'])
     del state_dict
@@ -307,7 +305,7 @@ while True:
             if total_norm.item() > grad_clip:
                 clip_time += 1
         # step the optimizer and scaler if training in fp16
-        optimizer.step()
+        optimizer.step(bs=total_bs * block_size)
         # flush the gradients as soon as we can, no need for this memory anymore
         optimizer.zero_grad(set_to_none=True)
 
@@ -370,7 +368,7 @@ while True:
             if total_norm.item() > grad_clip:
                 clip_time += 1
         # step the optimizer and scaler if training in fp16
-        optimizer.step()
+        optimizer.step(bs=total_bs * block_size)
         # flush the gradients as soon as we can, no need for this memory anymore
         optimizer.zero_grad(set_to_none=True)
 

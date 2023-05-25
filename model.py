@@ -1,15 +1,14 @@
 import math
 import inspect
 from dataclasses import dataclass
-from sophia import SophiaG, SophiaH
+from sophia import SophiaG
 
 import torch
 import torch.nn as nn
 from torch.nn import functional as F
 
 optimizer_dict = {'adamw': torch.optim.AdamW,
-                  'sophiag': SophiaG,
-                  'sophiah': SophiaH
+                  'sophiag': SophiaG
                  }
 
 # @torch.jit.script # good to enable when not using torch.compile, disable when using (our default)
@@ -265,7 +264,7 @@ class GPT(nn.Module):
 
         return model
 
-    def configure_optimizers(self, optimizer_name, weight_decay, learning_rate, betas, gamma, device_type):
+    def configure_optimizers(self, optimizer_name, weight_decay, learning_rate, betas, rho, device_type):
         """
         This long function is unfortunately doing something very simple and is being very defensive:
         We are separating out all parameters of the model into two buckets: those that will experience
@@ -323,8 +322,8 @@ class GPT(nn.Module):
             print(f"using fused AdamW: {use_fused}")
             extra_args = dict(fused=True) if use_fused else dict()
             optimizer = opt_func(optim_groups, lr=learning_rate, betas=betas, **extra_args)
-        elif optimizer_name == 'sophiah' or optimizer_name == 'sophiag':
-            optimizer = opt_func(optim_groups, lr=learning_rate, betas=betas, gamma=gamma)   
+        elif optimizer_name == 'sophiag':
+            optimizer = opt_func(optim_groups, lr=learning_rate, betas=betas, rho=rho)   
         else:
             raise ValueError('Invalid optimizer.')
         return optimizer

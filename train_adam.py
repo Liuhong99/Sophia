@@ -44,7 +44,8 @@ weight_decay = 1e-1
 beta1 = 0.9
 beta2 = 0.95
 grad_clip = 1.0 # clip gradients at this value, or disable if == 0.0
-gamma = 0.1
+rho
+rho = 0.1
 interval = 10
 variant = 4 
 # learning rate decay settings
@@ -173,7 +174,7 @@ model.to(device)
 scaler = torch.cuda.amp.GradScaler(enabled=(dtype == 'float16'))
 
 # optimizer
-optimizer = model.configure_optimizers(optimizer_name, weight_decay, learning_rate, (beta1, beta2), gamma, device_type)
+optimizer = model.configure_optimizers(optimizer_name, weight_decay, learning_rate, (beta1, beta2), rho, device_type)
 if init_from == 'resume':
     optimizer.load_state_dict(checkpoint['optimizer'])
     del state_dict

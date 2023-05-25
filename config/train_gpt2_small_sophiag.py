@@ -1,6 +1,6 @@
 wandb_log = True
 wandb_project = 'sophia'
-wandb_run_name='gpt2-small-sophiag-100k-new'
+wandb_run_name='gpt2-small-sophiag-100k'
 
 # these make the total batch size be ~0.5M
 # 8 batch size * 1024 block size * 6 gradaccum * 10 GPUs = 491,520
@@ -26,7 +26,7 @@ log_interval = 10
 
 # optimizer
 optimizer_name = 'sophiag'
-learning_rate = 1e-2 # max learning rate
+learning_rate = 3e-4 # max learning rate
 weight_decay = 1e-1
 beta1 = 0.965
 beta2 = 0.99
@@ -34,10 +34,10 @@ grad_clip = 1.0 # clip gradients at this value, or disable if == 0.0
 # learning rate decay settings
 decay_lr = True # whether to decay the learning rate
 warmup_iters = 2000 # how many steps to warm up for
-min_lr = 5e-4 
+min_lr = 1.5e-5 
 rho = 0.03
 interval = 10
 
 compile = True
 
-out_dir = 'out_small_sophiag_100k_new'
+out_dir = 'out_small_sophiag_100k'
