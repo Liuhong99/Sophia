@@ -175,6 +175,7 @@ if block_size < model.config.block_size:
 model.to(device)
 
 optimizer = model.configure_optimizers(optimizer_name, weight_decay, learning_rate, (beta1, beta2), total_bs * rho, device_type)
+print(optimizer.lr)
 if init_from == 'resume':
     optimizer.load_state_dict(checkpoint['optimizer'])
     del state_dict
