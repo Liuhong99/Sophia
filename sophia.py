@@ -6,7 +6,7 @@ from typing import List, Optional
 
 
 class SophiaG(Optimizer):
-    def __init__(self, params, lr=1e-5, betas=(0.965, 0.99), gamma = 2e4,
+    def __init__(self, params, lr=1e-5, betas=(0.965, 0.99), gamma = 0.04,
          weight_decay=1e-1, *, maximize: bool = False,
          capturable: bool = False):
         if not 0.0 <= lr:
@@ -185,13 +185,13 @@ def _single_tensor_sophiag(params: List[Tensor],
             step_size = lr 
             step_size_neg = step_size.neg()
 
-            ratio = (exp_avg.abs() / (hess + 1e-15)).clamp(None,gamma)
+            ratio = (exp_avg.abs() / (gamma * hess + 1e-15)).clamp(None,1)
             param.addcmul_(exp_avg.sign(), ratio, value=step_size_neg)
         else:
             step = step_t.item()
             step_size_neg = - lr 
             
-            ratio = (exp_avg.abs() / (hess + 1e-15)).clamp(None,gamma)
+            ratio = (exp_avg.abs() / (gamma * hess + 1e-15)).clamp(None,1)
             param.addcmul_(exp_avg.sign(), ratio, value=step_size_neg)
 
 class SophiaH(Optimizer):
