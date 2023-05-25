@@ -127,7 +127,7 @@ for epoch in range(epochs):
 ## Hyper-parameter Tuning
 
 Definition of learning rate 
-- The update in the code is written as $\theta_{t+1} = \theta_t - lr*\textup{clip}(m_t / (\rho * h_t + \epsilon), 1)$, which is equivalent to the update in the paper up to a re-parameterization. (the $lr$ here corresponds to $lr/\rho$ in the paper). 
+- The update in the code is written as $\theta_{t+1} = \theta_t - lr*\textup{clip}(m_t / (\rho * h_t + \epsilon), 1)$, which is equivalent to the update in the paper up to a re-parameterization. (the $lr$ here corresponds to $\rho \cdot \eta_t$ in the paper). 
 
 
 Some tips for tuning hyperparameters (based on our limited tuning):  
