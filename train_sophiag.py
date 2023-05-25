@@ -40,7 +40,7 @@ dropout = 0.0 # for pretraining 0 is good, for finetuning try 0.1+
 bias = False # do we use bias inside LayerNorm and Linear layers?
 # optimizer
 optimizer_name = 'sophiag' 
-learning_rate = 6e-4 # max learning rate
+learning_rate = 1e-2 # max learning rate
 max_iters = 600000 # total number of training iterations
 weight_decay = 1e-1
 beta1 = 0.9
@@ -174,8 +174,7 @@ if block_size < model.config.block_size:
     model_args['block_size'] = block_size # so that the checkpoint will have the right value
 model.to(device)
 
-optimizer = model.configure_optimizers(optimizer_name, weight_decay, learning_rate, (beta1, beta2), total_bs * rho, device_type)
-print(optimizer.lr)
+optimizer = model.configure_optimizers(optimizer_name, weight_decay, learning_rate, (beta1, beta2), rho, device_type)
 if init_from == 'resume':
     optimizer.load_state_dict(checkpoint['optimizer'])
     del state_dict
@@ -412,10 +411,10 @@ while True:
             y_sample = samp_dist.sample()
             loss = F.cross_entropy(logits.view(-1, logits.size(-1)), y_sample.view(-1), ignore_index=-1)
             # backward pass, with gradient scaling if training in fp16
-            (loss / gradient_accumulation_steps).backward()
+            (loss / gradient_accumulation_steps * np.sqrt(total_bs * block_size)).backward()
         # clip the gradient
         if grad_clip != 0.0:
-            total_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), grad_clip)
+            total_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), grad_clip * np.sqrt(total_bs * block_size))
         # step the optimizer and scaler if training in fp16
         optimizer.update_hessian()
         # flush the gradients as soon as we can, no need for this memory anymore
@@ -430,7 +429,7 @@ while True:
         
         for jj in range(LL):
             num_param += optimizer.state_dict()['state'][jj]['exp_avg'].numel()
-            num_effective += torch.sum(torch.abs(optimizer.state_dict()['state'][jj]['exp_avg']) < rho * total_bs * optimizer.state_dict()['state'][jj]['hessian'])
+            num_effective += torch.sum(torch.abs(optimizer.state_dict()['state'][jj]['exp_avg']) < rho * optimizer.state_dict()['state'][jj]['hessian'])
             hessian_norm += optimizer.state_dict()['state'][jj]['hessian'].detach().norm(1).item()
             hessian_norm2 += optimizer.state_dict()['state'][jj]['hessian'].detach().norm(2).item() ** 2
         hessian_norm2 = hessian_norm2 ** 0.5
