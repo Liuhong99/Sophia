@@ -67,6 +67,7 @@ config_keys = [k for k,v in globals().items() if not k.startswith('_') and isins
 exec(open('configurator.py').read()) # overrides from command line or config file
 config = {k: globals()[k] for k in config_keys} # will be useful for logging
 learning_rate = learning_rate * rho
+min_lr = min_lr * rho
 # -----------------------------------------------------------------------------
 
 # various inits, derived attributes, I/O setup
