@@ -16,6 +16,7 @@ This is an official implementation of the **Sophia-G** optimizer in the paper [h
 
 ## News and Updates
 
+- Watch Sophia running in the [wandb report](https://api.wandb.ai/links/hliu99/o4mrh3ry).
 
 - We will spend more resources on scaling up to larger models. Please feel free to let us know if you have any feedback or interesting findings from using Sophia.
 
@@ -71,8 +72,6 @@ Please adjust ```nproc_per_node```, ```batch_size```, and ```gradient_accumulati
 
 This will lead to results in the figure below:
 ![repro124m](assets/small_100k_plus.png)
-
-
 
 
 ## General Usage
