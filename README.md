@@ -16,7 +16,7 @@ This is an official implementation of the **Sophia-G** optimizer in the paper [h
 
 ## News and Updates
 
-- Watch Sophia running in the [wandb report](https://api.wandb.ai/links/hliu99/o4mrh3ry).
+- :fire: Watch Sophia running in the [wandb report](https://api.wandb.ai/links/hliu99/o4mrh3ry).
 
 - We will spend more resources on scaling up to larger models. Please feel free to let us know if you have any feedback or interesting findings from using Sophia.
 
