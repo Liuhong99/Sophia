@@ -1,7 +1,7 @@
 # Sophia: A Scalable Stochastic Second-order Optimizer for Language Model Pre-training
 
 
-This is an official implementation of the **Sophia-G** optimizer in the paper [here](https://arxiv.org/abs/2305.14342) and GPT-2 training scripts. The code is based on [nanoGPT](https://github.com/karpathy/nanoGPT/). Please cite the paper and star this repo if you find Sophia useful. Thanks!
+This is an official implementation of the **Sophia-G** optimizer in the paper [https://arxiv.org/abs/2305.14342](https://arxiv.org/abs/2305.14342) and GPT-2 training scripts. The code is based on [nanoGPT](https://github.com/karpathy/nanoGPT/). Please cite the paper and star this repo if you find Sophia useful. Thanks!
 
 
 ```tex
@@ -15,13 +15,13 @@ This is an official implementation of the **Sophia-G** optimizer in the paper [h
 
 
 ## News and Updates
-
-- :fire: Watch Sophia running in the [wandb report](https://api.wandb.ai/links/hliu99/o4mrh3ry).
+- :fire: :fire: Training script released for GPT2 Medium (355M).
+- :fire: Watch Sophia running on GPT2 Small (125M) in the [wandb report](https://api.wandb.ai/links/hliu99/o4mrh3ry).
 
 - We will spend more resources on scaling up to larger models. Please feel free to let us know if you have any feedback or interesting findings from using Sophia.
 
 
-- For GPT-2 Middle (355M) and Large (770M), please see the hyperparameters we used to produce the results in the paper below in the hyperparameter tuning. The scripts will be released soon (potentially with an improved choice of hyperparameters that we are currently experimenting with.)
+- For Large (770M), please see the hyperparameters we used to produce the results in the paper below in the hyperparameter tuning. The scripts will be released soon (potentially with an improved choice of hyperparameters that we are currently experimenting with.)
 - The JAX version of Sophia-H will be included at [levanter](https://github.com/stanford-crfm/levanter), which is also an amazing code base for language model pre-training.
 
 
@@ -43,13 +43,11 @@ This is an official implementation of the **Sophia-G** optimizer in the paper [h
 
 ## Usage (GPT-2 Pre-training)
 
-
 Prepare the [OpenWebText](https://huggingface.co/datasets/openwebtext) data following [nanoGPT](https://github.com/karpathy/nanoGPT/):
 ```
 $ python data/openwebtext/prepare.py
 ```
 Start pre-training GPT2 Small (125M):
-
 
 If you have a machine with 10 A5000 (24GB) GPUs,
 ```
@@ -60,18 +58,28 @@ If you have a machine with 8 A100 (40GB) GPUs,
 $ torchrun --standalone --nproc_per_node=8 train_sophiag.py config/train_gpt2_small_sophiag.py --batch_size=12 --gradient_accumulation_steps=5
 ```
 
-
 To reproduce the AdamW baseline following [nanoGPT](https://github.com/karpathy/nanoGPT/):
 ```
 $ torchrun --standalone --nproc_per_node=10 train_adam.py config/train_gpt2_small_adam.py --batch_size=8 --gradient_accumulation_steps=6
 ```
 
+Start pre-training GPT2 Medium (355M):
+
+If you have a machine with 8 A100 (40GB) GPUs,
+```
+$ torchrun --standalone --nproc_per_node=8 train_sophiag.py config/train_gpt2_medium_sophiag.py --batch_size=6 --gradient_accumulation_steps=10
+```
+
+To reproduce the AdamW baseline:
+```
+$ torchrun --standalone --nproc_per_node=8 train_adam.py config/train_gpt2_medium_adam.py --batch_size=6 --gradient_accumulation_steps=10
+```
 
 Please adjust ```nproc_per_node```, ```batch_size```, and ```gradient_accumulation_steps``` accordingly if you use other hardware setup. Make sure their product equals 480.
 
 
 This will lead to results in the figure below:
-![repro124m](assets/small_100k_plus.png)
+![repro355m](assets/medium_100k_plus.png)
 
 
 ## General Usage
@@ -130,9 +138,11 @@ Definition of learning rate
 
 
 Some tips for tuning hyperparameters (based on our limited tuning):  
-- Choose lr to be about half the learning rate that you would use for AdamW. Some partial ongoing results indicate that lr can be made even larger, possibly leading to a faster convergence.
-- Consider choosing $\rho$ in $[0.01, 0.1]$. $\rho$ seems transferable across different model sizes. We choose rho = 0.03 in 125M and 335M Sophia-G
-The (lr, rho) for 335M, Sophia-G is chosen to be (2e-4,0.03). Though we suspect that lr can be larger. 
+- Choose lr to be about the same as the learning rate that you would use for AdamW. Some partial ongoing results indicate that lr can be made even larger, possibly leading to a faster convergence.
+
+- Consider choosing $\rho$ in $[0.01, 0.1]$. $\rho$ seems transferable across different model sizes. We choose rho = 0.03 in 125M Sophia-G.
+The (lr, rho) for 355M, Sophia-G is chosen to be (5e-4,0.05) (more aggressive and therefore, even faster! :rocket: :rocket:). Slightly increasing weight decay seems also helpful.
+
 - Please feel free to let us know what you find out during hyper-parameters tuning. We appreciate your valuable feedback and comments!
 
 
