@@ -63,6 +63,9 @@ To reproduce the AdamW baseline following [nanoGPT](https://github.com/karpathy/
 $ torchrun --standalone --nproc_per_node=10 train_adam.py config/train_gpt2_small_adam.py --batch_size=8 --gradient_accumulation_steps=6
 ```
 
+This will lead to results in the figure below:
+![repro125m](assets/small_100k_plus.png)
+
 Start pre-training GPT2 Medium (355M):
 
 If you have a machine with 8 A100 (40GB) GPUs,
