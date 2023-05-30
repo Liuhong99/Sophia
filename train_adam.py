@@ -44,7 +44,6 @@ weight_decay = 1e-1
 beta1 = 0.9
 beta2 = 0.95
 grad_clip = 1.0 # clip gradients at this value, or disable if == 0.0
-rho
 rho = 0.1
 interval = 10
 variant = 4 
