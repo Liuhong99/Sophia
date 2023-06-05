@@ -27,7 +27,7 @@ log_interval = 10
 # optimizer
 optimizer_name = 'sophiag'
 learning_rate = 5e-4 # max learning rate
-weight_decay = 1e-1
+weight_decay = 2e-1
 beta1 = 0.965
 beta2 = 0.99
 grad_clip = 1.0 # clip gradients at this value, or disable if == 0.0
