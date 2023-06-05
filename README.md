@@ -145,7 +145,7 @@ Some tips for tuning hyperparameters (based on our limited tuning):
 - Choose lr to be about the same as the learning rate that you would use for AdamW. Some partial ongoing results indicate that lr can be made even larger, possibly leading to a faster convergence.
 
 - Consider choosing $\rho$ in $[0.01, 0.1]$. $\rho$ seems transferable across different model sizes. We choose rho = 0.03 in 125M Sophia-G.
-The (lr, rho) for 355M, Sophia-G is chosen to be (5e-4,0.05) (more aggressive and therefore, even faster! :rocket: :rocket:). Slightly increasing weight decay seems also helpful.
+The (lr, rho) for 355M, Sophia-G is chosen to be (5e-4,0.05) (more aggressive and therefore, even faster! :rocket: :rocket:). Slightly increasing weight decay to 0.2 seems also helpful.
 
 - Please feel free to let us know what you find out during hyper-parameters tuning. We appreciate your valuable feedback and comments!
 
