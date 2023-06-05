@@ -15,6 +15,7 @@ This is an official implementation of the **Sophia-G** optimizer in the paper [h
 
 
 ## News and Updates
+- :fire: Watch Sophia running on GPT2 Medium(355M) in the [wandb report](https://api.wandb.ai/links/hliu99/gpdwk4gd).
 - :fire: :fire: Training script released for GPT2 Medium (355M).
 - :fire: Watch Sophia running on GPT2 Small (125M) in the [wandb report](https://api.wandb.ai/links/hliu99/rs9tp0rb).
 
