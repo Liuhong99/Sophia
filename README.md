@@ -85,6 +85,12 @@ Please adjust ```nproc_per_node```, ```batch_size```, and ```gradient_accumulati
 This will lead to results in the figure below:
 ![repro355m](assets/medium_100k_plus.png)
 
+## Installation
+
+```
+pip install "git+https://github.com/Liuhong99/Sophia.git"
+```
+
 
 ## General Usage
 
