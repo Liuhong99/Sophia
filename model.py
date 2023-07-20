@@ -48,7 +48,6 @@ class CausalSelfAttention(nn.Module):
         self.idx_layer = idx_layer
         self.scale_attn_by_inverse_layer_idx = config.scale_attn_by_inverse_layer_idx
         
-
         self.flash = hasattr(torch.nn.functional, 'scaled_dot_product_attention')
         if not self.flash:
             print("Using slow attention. Flash Attention requires PyTorch >= 2.0")
