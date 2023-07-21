@@ -80,6 +80,7 @@ if ddp:
     seed_offset = ddp_rank # each process gets a different seed
 else:
     # if not ddp, we are running on a single gpu, and one process
+    ddp_rank = 0                             #ddp_rank is used in get_batch function so this has to be here also when running locally
     master_process = True
     seed_offset = 0
     gradient_accumulation_steps *= 8 # simulate 8 gpus
