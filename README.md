@@ -15,15 +15,17 @@ This is an official implementation of the **Sophia-G** optimizer in the paper [h
 
 
 ## News and Updates
-- :fire: :fire: Watch Sophia running on GPT2 Medium(355M) in the [wandb report](https://api.wandb.ai/links/hliu99/gpdwk4gd).
-- :fire: :fire: Training script released for GPT2 Medium (355M).
-- :fire: Watch Sophia running on GPT2 Small (125M) in the [wandb report](https://api.wandb.ai/links/hliu99/rs9tp0rb).
+- :fire: :fire: [Training script](https://github.com/stanford-crfm/levanter/tree/e183ec80ec5971b12d4a3fb08a160268de342670) and results released for GPT2 1.5B.
+![repro1.5b](assets/1.5B_200k_new.png)
+
+
+- :fire: Watch Sophia running on GPT2 Medium(355M) in the [wandb report](https://api.wandb.ai/links/hliu99/gpdwk4gd).
 
 - We will spend more resources on scaling up to larger models. Please feel free to let us know if you have any feedback or interesting findings from using Sophia.
 
 
 - For Large (770M), please see the hyperparameters we used to produce the results in the paper below in the hyperparameter tuning. The scripts will be released soon (potentially with an improved choice of hyperparameters that we are currently experimenting with.)
-- The JAX version of Sophia-H will be included at [levanter](https://github.com/stanford-crfm/levanter), which is also an amazing code base for language model pre-training.
+
 
 
 
@@ -84,6 +86,14 @@ Please adjust ```nproc_per_node```, ```batch_size```, and ```gradient_accumulati
 
 This will lead to results in the figure below:
 ![repro355m](assets/medium_100k_plus.png)
+
+Start pre-training GPT2 1.5B:
+
+We use [the Pile](https://github.com/EleutherAI/the-pile) and GPT NeoX tokenizer. First set up TPU instances and environment following [levanter](https://github.com/stanford-crfm/levanter/blob/e183ec80ec5971b12d4a3fb08a160268de342670/docs/Getting-Started-TPU-VM.md). Then change GAMMA_SOPHIA_G to 200 in [optim.py](https://github.com/stanford-crfm/levanter/blob/e183ec80ec5971b12d4a3fb08a160268de342670/src/levanter/optim.py). The training script for 1.5B model is 
+```
+gcloud compute tpus tpu-vm ssh <instance_name> --zone <zone_name> --worker=all --command 'WANDB_API_KEY=<wandb_api_key> levanter/infra/launch.sh python levanter/examples/gpt2_example.py --config_path levanter/config/gpt2_1536_pile.yaml --trainer.beta1 0.965 --trainer.beta2 0.99 --trainer.min_lr_ratio 0.020 --trainer.weight_decay 0.15 --trainer.learning_rate 2.5e-4 --trainer.warmup_ratio 0.01'
+
+```
 
 
 ## General Usage
