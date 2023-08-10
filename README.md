@@ -121,16 +121,28 @@ Start pre-training GPT2 Small (125M):
 
 If you have a machine with 10 A5000 (24GB) GPUs,
 ```
-$ torchrun --standalone --nproc_per_node=10 train_sophiag.py config/train_gpt2_small_sophiag.py --batch_size=8 --gradient_accumulation_steps=6
+$ torchrun --standalone --nproc_per_node=10 \
+      train_sophiag.py \
+      config/train_gpt2_small_sophiag.py \
+      --batch_size=8 \
+      --gradient_accumulation_steps=6
 ```
 If you have a machine with 8 A100 (40GB) GPUs,
 ```
-$ torchrun --standalone --nproc_per_node=8 train_sophiag.py config/train_gpt2_small_sophiag.py --batch_size=12 --gradient_accumulation_steps=5
+$ torchrun --standalone --nproc_per_node=8 \
+      train_sophiag.py \
+      config/train_gpt2_small_sophiag.py \
+      --batch_size=12 \
+      --gradient_accumulation_steps=5
 ```
 
 To reproduce the AdamW baseline following [nanoGPT](https://github.com/karpathy/nanoGPT/):
 ```
-$ torchrun --standalone --nproc_per_node=10 train_adam.py config/train_gpt2_small_adam.py --batch_size=8 --gradient_accumulation_steps=6
+$ torchrun --standalone --nproc_per_node=10 \
+      train_adam.py \
+      config/train_gpt2_small_adam.py \
+      --batch_size=8 \
+      --gradient_accumulation_steps=6
 ```
 
 This will lead to results in the figure below:
@@ -142,12 +154,20 @@ Start pre-training GPT2 Medium (355M):
 
 If you have a machine with 8 A100 (40GB) GPUs,
 ```
-$ torchrun --standalone --nproc_per_node=8 train_sophiag.py config/train_gpt2_medium_sophiag.py --batch_size=6 --gradient_accumulation_steps=10
+$ torchrun --standalone --nproc_per_node=8 \
+      train_sophiag.py \
+      config/train_gpt2_medium_sophiag.py \
+      --batch_size=6 \
+      --gradient_accumulation_steps=10
 ```
 
 To reproduce the AdamW baseline:
 ```
-$ torchrun --standalone --nproc_per_node=8 train_adam.py config/train_gpt2_medium_adam.py --batch_size=6 --gradient_accumulation_steps=10
+$ torchrun --standalone --nproc_per_node=8 \
+      train_adam.py \
+      config/train_gpt2_medium_adam.py \
+      --batch_size=6 \
+      --gradient_accumulation_steps=10
 ```
 
 Please adjust ```nproc_per_node```, ```batch_size```, and ```gradient_accumulation_steps``` accordingly if you use other hardware setup. Make sure their product equals 480.
@@ -162,7 +182,10 @@ Start pre-training GPT2 1.5B:
 
 We use [the Pile](https://github.com/EleutherAI/the-pile) and GPT NeoX tokenizer. First set up TPU instances and environment following [levanter](https://github.com/stanford-crfm/levanter/blob/e183ec80ec5971b12d4a3fb08a160268de342670/docs/Getting-Started-TPU-VM.md). Then change GAMMA_SOPHIA_G to 200 in [optim.py](https://github.com/stanford-crfm/levanter/blob/e183ec80ec5971b12d4a3fb08a160268de342670/src/levanter/optim.py). The training script for 1.5B model is 
 ```
-gcloud compute tpus tpu-vm ssh <instance_name> --zone <zone_name> --worker=all --command 'WANDB_API_KEY=<wandb_api_key> levanter/infra/launch.sh python levanter/examples/gpt2_example.py --config_path levanter/config/gpt2_1536_pile.yaml --trainer.beta1 0.965 --trainer.beta2 0.99 --trainer.min_lr_ratio 0.020 --trainer.weight_decay 0.15 --trainer.learning_rate 2.5e-4 --trainer.warmup_ratio 0.01'
+gcloud compute tpus tpu-vm ssh <instance_name> \
+      --zone <zone_name> \
+      --worker=all \
+      --command 'WANDB_API_KEY=<wandb_api_key> levanter/infra/launch.sh python levanter/examples/gpt2_example.py --config_path levanter/config/gpt2_1536_pile.yaml --trainer.beta1 0.965 --trainer.beta2 0.99 --trainer.min_lr_ratio 0.020 --trainer.weight_decay 0.15 --trainer.learning_rate 2.5e-4 --trainer.warmup_ratio 0.01'
 
 ```
 
