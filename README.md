@@ -80,13 +80,13 @@ for epoch in range(epochs):
 ## Hyper-parameter Tuning
 
 ### Definition of learning rate 
-- The update in the code is written as $\theta_{t+1} = \theta_t - lr*\textup{clip}(m_t / (\rho * h_t + \epsilon), 1)$, which is equivalent to the update in the paper up to a re-parameterization. (the $lr$ here corresponds to $\rho \cdot \eta_t$ in the paper). 
+- The update in the code is written as $\theta_{t+1} = \theta_t - lr*\textup{clip}(m_t / (\rho * h_t + \epsilon), 1)$, which is equivalent to the update in the paper up to a re-parameterization. (the $lr$ here corresponds to $\rho \cdot \eta_t$ in the paper). As a result, the learning rate of AdamW and Lion is not directly comparable. Empirically, Adam and Lion with learning rate ratio 5:1 has similar behaviour. The learning rate of SophiaG and Lion is directly comparable. Sophia allows to use much larger learning rate the Lion, and this is why Sophia is much faster. 
 
-- The learning rate of AdamW and Lion is not directly comparable. Empirically, Adam and Lion with learning rate ratio 5:1 has similar behaviour. The learning rate of SophiaG and Lion is directly comparable. Sophia allows to use much larger learning rate the Lion, and this is why Sophia is much faster. 
+### Tuning the hyperparameter $\rho$ 
+- Tune $\rho$ to make the proportion of the clipped coordinates stable and in a proper range. This is tracked as ```train/win_rate``` in the [GPT-2 training example](https://github.com/Liuhong99/Sophia/blob/2443b03529ecdccf65699a5e55e68d69ede39509/train_sophiag.py#L398C21-L398C65). ```train/win_rate``` should peak in the beginning and remain stable afterwards. ```train/win_rate``` should stay in the range of 0.1 - 0.5. Typically a large $\rho$ will lead to a large ```train/win_rate```. An example of typical ```win_rate``` behavior in T5 model is provided below.
 
-### General models
+### Tuning the learning rate and weight decay
 - Choose lr to be slightly smaller than the learning rate that you would use for AdamW or 3 - 5 times the learning rate that you would use for Lion. 
-- Tune $\rho$ to make the proportion of the clipped coordinates stable and in a proper range. This is tracked as ```train/win_rate``` in the [GPT-2 training example](https://github.com/Liuhong99/Sophia/blob/2443b03529ecdccf65699a5e55e68d69ede39509/train_sophiag.py#L398C21-L398C65). ```train/win_rate``` should peak in the beginning and remain stable afterwards. ```train/win_rate``` should stay in the range of 0.1 - 0.5. Typically a large $\rho$ will lead to a large ```train/win_rate```. An example of typical ```win_rate``` behavior in T5 model is provided below. 
 <p align="center" width="100%">
       <img src="assets/t5_winrate.png" style="width: 60%; min-width: 200px; display: block; margin: auto;">
 </p>
@@ -95,7 +95,7 @@ for epoch in range(epochs):
   
 - Always use about 2x larger weight decay than what you would use for AdamW.
 
-### GPT-2 models
+### Hyperparameters for GPT-2 models
 
 - Choose lr to be about the same as the learning rate that you would use for AdamW or 5 - 10 times the learning rate that you would use for Lion.
 - Tune $\rho$ to make the proportion of the parameters where the update is not clipped stable and in a proper range. This is tracked as ```train/win_rate``` in the [GPT-2 training example](https://github.com/Liuhong99/Sophia/blob/2443b03529ecdccf65699a5e55e68d69ede39509/train_sophiag.py#L398C21-L398C65). ```train/win_rate``` should peak in the beginning and remain stable afterwards. ```train/win_rate``` should stay in the range of 0.1 - 0.5. Typically a large $\rho$ will lead to a large ```train/win_rate```.
