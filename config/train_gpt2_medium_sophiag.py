@@ -26,16 +26,16 @@ log_interval = 10
 
 # optimizer
 optimizer_name = 'sophiag'
-learning_rate = 6e-4 # max learning rate
-weight_decay = 3e-1
+learning_rate = 7e-4 # max learning rate
+weight_decay = 2e-1
 beta1 = 0.965
 beta2 = 0.99
 grad_clip = 1.0 # clip gradients at this value, or disable if == 0.0
 # learning rate decay settings
 decay_lr = True # whether to decay the learning rate
 warmup_iters = 2000 # how many steps to warm up for
-min_lr = 1.5e-5 
-rho = 0.05
+min_lr = 1e-5 
+rho = 0.08
 interval = 10
 
 compile = True
