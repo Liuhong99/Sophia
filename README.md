@@ -15,18 +15,15 @@ This is an official implementation of the **Sophia-G** optimizer in the paper [h
 
 
 ## News and Updates
-- :fire: :fire: [Training script](https://github.com/stanford-crfm/levanter/tree/e183ec80ec5971b12d4a3fb08a160268de342670) and results released for GPT2 1.5B.
-<p align="center" width="100%">
-      <img src="assets/1.5B_200k_new.png" style="width: 60%; min-width: 200px; display: block; margin: auto;">
-</p>
+- Updated results with latest PyTorch version.
 
 
 
 ## Dependencies
 
 
-- [pytorch](https://pytorch.org) 2.0
-- transformers
+- [PyTorch](https://pytorch.org) 2.1.2
+- transformers 4.33.0
 - datasets
 - tiktoken
 - wandb
@@ -106,7 +103,7 @@ for epoch in range(epochs):
 | Model Size  | lr for Adam | lr for Lion | lr for Sophia | $\rho$ for Sophia | weight decay for Sophia |
 | -------- | ------- | ------- | ------- | ------- | ------- |
 | 125M | 6e-4 | 1e-4 | 6e-4 | 0.05 | 0.2 |
-| 355M | 3e-4 | 1e-4 | 5e-4 | 0.05 | 0.2 |
+| 355M | 3e-4 | 1e-4 | 7e-4 | 0.08 | 0.2 |
 | 770M | 2e-4 | 8e-5 | 3e-4 | 0.05 | 0.2 |
 
 - Please feel free to let us know what you find out during hyper-parameters tuning. We appreciate your valuable feedback and comments!

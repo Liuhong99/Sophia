@@ -61,7 +61,7 @@ backend = 'nccl' # 'nccl', 'gloo', etc.
 device = 'cuda' # examples: 'cpu', 'cuda', 'cuda:0', 'cuda:1' etc., or try 'mps' on macbooks
 dtype = 'bfloat16' # 'float32', 'bfloat16'
 compile = True # use PyTorch 2.0 to compile the model to be faster
-scale_attn_by_inverse_layer_idx = False
+scale_attn_by_inverse_layer_idx = True
 # -----------------------------------------------------------------------------
 config_keys = [k for k,v in globals().items() if not k.startswith('_') and isinstance(v, (int, float, bool, str))]
 exec(open('configurator.py').read()) # overrides from command line or config file
